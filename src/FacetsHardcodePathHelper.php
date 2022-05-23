@@ -400,7 +400,7 @@ class FacetsHardcodePathHelper {
 
     // Remove any prefix from the path
     $current_path = \Drupal::service('path.current')->getPath();
-    $result = \Drupal::service('path.alias_manager')->getAliasByPath($current_path);
+    $result = \Drupal::service('path_alias.manager')->getAliasByPath($current_path);
     if ($pos = strpos($path, $result)) {
       $path = substr($path, $pos);
     }
