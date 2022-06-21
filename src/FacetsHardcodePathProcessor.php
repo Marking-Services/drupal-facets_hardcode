@@ -19,11 +19,11 @@ class FacetsHardcodePathProcessor implements InboundPathProcessorInterface {
    * {@inheritdoc}
    */
   public function processInbound($path, Request $request) {
-    /** @var \Drupal\path_alias\AliasRepositoryInterface $repository */
-    $repository = \Drupal::service('path_alias.repository');
-    $alias = $repository->lookupByAlias($path, \Drupal::languageManager()->getCurrentLanguage()->getId());
+    $aliases = \Drupal::entityTypeManager()->getStorage('path_alias')->loadByProperties([
+        'alias' => $path
+    ]);
 
-    if (!is_array($alias) && FacetsHardcodePathHelper::isFacetPath($path)) {
+    if (empty($aliases) && FacetsHardcodePathHelper::isFacetPath($path)) {
       $new_path = FacetsHardcodePathHelper::filterFacetsFromPath($path);
       if ($new_path != $path) {
         \Drupal::request()->attributes->set('_disable_route_normalizer', TRUE);
